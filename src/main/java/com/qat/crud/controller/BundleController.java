@@ -1,7 +1,7 @@
-package com.qat.crud.RestController;
+package com.qat.crud.controller;
 
-import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,31 +19,30 @@ import com.qat.crud.domain.Bundle.model.Bundle;
 
 @RestController
 @RequestMapping("/bundle")
-public class BundleRest {
+public class BundleController {
+	@Autowired
+	private final BundleBAC bac;
 
-	private final BundleBAC bundleBAC;
-
-	public BundleRest(BundleBAC bundleBAC) {
-		this.bundleBAC = bundleBAC;
+	public BundleController(BundleBAC bac) {
+		this.bac = bac;
 	}
-	
 	
 
 	@GetMapping("/fetch-all")
 	public ResponseEntity<?> listAllBundle() {
 	    try{
-	        Response<Bundle> response = bundleBAC.fetchAllBundles();
+	        Response<Bundle> response = bac.fetchAllBundles();
 	        return response.toResponseEntity();
 
 	      }catch (Exception e){
-	        Response<String> response = Response.of(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-	        return  response.toResponseEntity();
+		        Response<String> response = Response.of(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		        return  response.toResponseEntity();
 	      }
 	}
 	@GetMapping("/fetch-byId/{id}")
 	public ResponseEntity<?> listByIdBundle(@PathVariable Integer id) {
 	    try{
-	        Response<Bundle> response = bundleBAC.fetchBundleById(id);
+	        Response<Bundle> response = bac.fetchBundleById(id);
 	        return response.toResponseEntity();
 
 	      }catch (Exception e){
@@ -56,7 +55,7 @@ public class BundleRest {
 	@PostMapping("/create")
 	public ResponseEntity<?> createBundle(@RequestBody Bundle bundleData) {
 	    try{
-	        Response<Bundle> response = bundleBAC.insertBundle(bundleData);
+	        Response<Bundle> response = bac.insertBundle(bundleData);
 	        return response.toResponseEntity();
 
 	      }catch (Exception e){
@@ -69,7 +68,7 @@ public class BundleRest {
 	@PutMapping("/update")
 	public ResponseEntity<?> updateBundle(@RequestBody Bundle bundleData) {
 	    try{
-	        Response<Bundle> response = bundleBAC.updateBundle(bundleData);
+	        Response<Bundle> response = bac.updateBundle(bundleData);
 	        return response.toResponseEntity();
 
 	      }catch (Exception e){
@@ -81,18 +80,13 @@ public class BundleRest {
 	}
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteBundle(@PathVariable Integer id) {
-
-	    try {
-	        boolean transactionStatus = bundleBAC.deleteBundleById(id);
-
-	        if (transactionStatus == true)
-	          return  Response.of("Bundle deleted ", HttpStatus.OK).toResponseEntity();
-	        else
-	          return  Response.of("Bundle id not found", HttpStatus.NOT_FOUND).toResponseEntity();
-
-	      } catch (Exception e) {
-	        Response<String> response = Response.of(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    try{
+	        Response<Bundle> response = bac.deleteBundleById(id);
 	        return response.toResponseEntity();
+
+	      }catch (Exception e){
+	        Response<String> response = Response.of(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	        return  response.toResponseEntity();
 	      }
 
 	

@@ -11,6 +11,7 @@ public class Bundle {
 	private String zipCodeDestin;
 	private String description;
 	private Status status;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -57,6 +58,13 @@ public class Bundle {
 		this.description = description;
 		this.status = status;
 	}
+	@Override
+	public String toString() {
+		return "Bundle [id=" + id + ", namePackage=" + namePackage + ", zipCodeOrigin=" + zipCodeOrigin
+				+ ", zipCodeDestin=" + zipCodeDestin + ", description=" + description + ", status=" + status + "]";
+	}
+	
+	
 	
 	
 	

@@ -13,7 +13,7 @@ public interface BundleBAC {
 
 	  public Response<Bundle> updateBundle(Bundle bundle);
 
-	  public boolean deleteBundleById(Integer id);
+	  public Response<Bundle> deleteBundleById(Integer id);
 	
 
 }

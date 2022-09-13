@@ -1,48 +1,67 @@
 package com.qat.crud.domain.Bundle.BAR;
 
-import java.util.List;
+import java.util.Objects;
 
-import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
+import com.qat.crud.domain.Bundle.Response;
 import com.qat.crud.domain.Bundle.model.Bundle;
-
 
 @Repository
 public class BundleBARImpl implements BundleBAR {
+	@Autowired
+	private BundleMapper mapper;
 
-	  private final BundleMapper mapper;
-	//  private final SqlSession sqlSession;
-
-	  public BundleBARImpl(BundleMapper mapper/*, SqlSession sqlSession*/) {
-	    this.mapper = mapper;
-//	    this.sqlSession = sqlSession;
-	  }
-		
-	@Override
-	public List<Bundle> fetchAllBundles() {
-		return mapper.fetchAll();
+	public BundleBARImpl(BundleMapper mapper) {
+		this.mapper = mapper;
 	}
 
 	@Override
-	public Bundle fetchBundleById(Integer id) {
-		return mapper.fetchById(id);
+	public Response<Bundle> fetchAllBundles() {
+
+		return Response.of(mapper.fetchAll(), HttpStatus.OK);
 	}
 
 	@Override
-	public boolean insertBundle(Bundle bundle) {
-		return mapper.insert(bundle);
+	public Response<Bundle> fetchBundleById(Integer id) {
+		Bundle bundle = mapper.fetchById(id);
+		if (Objects.nonNull(bundle)) {
+			return Response.of(bundle, HttpStatus.OK);
+		} else {
+			return Response.of(HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@Override
-	public boolean updateBundle(Bundle bundle) {
-		return mapper.updatedById(bundle);
+	public Response<Bundle> insertBundle(Bundle bundle) {
+		if (mapper.insert(bundle)) {
+			return Response.of(bundle, HttpStatus.OK);
+		} else {
+			return Response.of(HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
-	public boolean deleteBundle(Integer id) {
-		return mapper.deleteById(id);
+	public Response<Bundle> updateBundle(Bundle bundle) {
+		if(mapper.updatedById(bundle)) {
+			return Response.of(bundle, HttpStatus.OK);
+		}else {
+		      return Response.of(HttpStatus.BAD_REQUEST);
+
+		}	
 	}
 
+	@Override
+	public Response<Bundle> deleteBundleById(Integer id) {
+		if(mapper.deleteById(id)) {
+			return Response.of(HttpStatus.OK);
+		}
+		else {
+			return Response.of(HttpStatus.BAD_REQUEST);
+		}
+	}
 
 }

@@ -1,8 +1,6 @@
 package com.qat.crud.domain.Bundle.BAC;
 
-import java.util.Collections;
-import java.util.Objects;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -14,62 +12,52 @@ import com.qat.crud.domain.Bundle.model.Bundle;
 @Component
 public class BundleBACImpl implements BundleBAC {
 
-	public BundleBACImpl(BundleBAR bundleBAR) {
-		this.bundleBAR = bundleBAR;
+	public BundleBACImpl(BundleBAR bar) {
+		this.bar = bar;
 	}
 
-	private final BundleBAR bundleBAR;
+
+	@Autowired
+	private BundleBAR bar;
 
 	@Override
 	public Response<Bundle> fetchAllBundles() {
-		return Response.of(bundleBAR.fetchAllBundles(), HttpStatus.OK);
+		return bar.fetchAllBundles();
+
 	}
 
 	@Override
 	public Response<Bundle> fetchBundleById(Integer id) {
-//		return Response.of(bundleBAR.fetchBundleById(id), HttpStatus.OK);
-		Bundle bundle = bundleBAR.fetchBundleById(id);
-		return Response.of(Objects.nonNull(bundle) ? Collections.singletonList(bundle) : Collections.emptyList(),
-				Objects.nonNull(bundle) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+		return bar.fetchBundleById(id);
 	}
 
 	@Override
 	public Response<Bundle> insertBundle(Bundle bundle) {
 		Validator validator = new BundleValidator(bundle);
-
 		if (!validator.validate()) {
-			return Response.of(HttpStatus.BAD_REQUEST, validator.getErrors());
-		}
-
-		boolean transactionStatus = bundleBAR.insertBundle(bundle);
-
-		if (transactionStatus == true) {
-			return Response.of(bundle, HttpStatus.OK);
+			return Response.of(HttpStatus.BAD_REQUEST);
 		} else {
-			return Response.of(HttpStatus.INTERNAL_SERVER_ERROR);
+			return bar.insertBundle(bundle);
 		}
 	}
 
 	@Override
 	public Response<Bundle> updateBundle(Bundle bundle) {
+
 		Validator validator = new BundleValidator(bundle);
-
 		if (!validator.validate()) {
-			return Response.of(HttpStatus.BAD_REQUEST, validator.getErrors());
-		}
-
-		boolean transactionStatus = bundleBAR.updateBundle(bundle);
-
-		if (transactionStatus) {
-			return Response.of(bundle, HttpStatus.OK);
+			return Response.of(HttpStatus.BAD_REQUEST);
 		} else {
-			return Response.of(HttpStatus.INTERNAL_SERVER_ERROR);
+			return bar.updateBundle(bundle);
 		}
+
 	}
 
 	@Override
-	public boolean deleteBundleById(Integer id) {
-		return bundleBAR.deleteBundle(id);
+	public Response<Bundle> deleteBundleById(Integer id) {
+
+		return bar.deleteBundleById(id);
+
 	}
 
 }

@@ -1,59 +1,51 @@
 package com.qat.crud.domain.Bundle.BAC;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
-
-import java.util.List;
-
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 
 import com.qat.crud.domain.Bundle.Response;
+import com.qat.crud.domain.Bundle.BAR.BundleBAR;
+import com.qat.crud.domain.Bundle.BAR.BundleBuilder;
 import com.qat.crud.domain.Bundle.model.Bundle;
 import com.qat.crud.domain.Bundle.model.Status;
 
-class BundleBACTest {
-	
+@ExtendWith(MockitoExtension.class)
+public class BundleBACTest {
+
 	@Mock
-	private BundleBAC bundleBAC;
-	
-	public static void main (String [] args) {
-		
-	}
-	
-	  @SuppressWarnings("unchecked")
-	public void fetchAllBundles() {
-		  MockitoAnnotations.initMocks(bundleBAC);
-		  List<Bundle> bundle = getBundle();
-		  when(bundleBAC.fetchAllBundles()).thenReturn((Response<Bundle>) bundle);
-		  System.out.println(bundleBAC.fetchAllBundles());
-		  
-	  }
-	  
-	  private List<Bundle> getBundle() {
-		  Bundle bundle = new Bundle();
-		  bundle.setId(1);
-		  bundle.setNamePackage("icebox");
-		  bundle.setZipCodeOrigin("72820201");
-		  bundle.setZipCodeDestin("72820200");
-		  bundle.setDescription("used to keep low temperature");
-		  bundle.setStatus(Status.waiting_payment);
-		  return (List<Bundle>) bundle;
-	  }
-	  
-
-
-	
-	private List<Bundle> getBundle() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	BundleBAR bar;
+	@Mock
+	BundleBACImpl bac;
 
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	public void testFetchBundleById() {
+		
+	    final Bundle bundleExpected = 
+	    		BundleBuilder.builder().
+	    		id(1).
+	    		namePackage("brush teeth").
+	    		zipCodeOrigin("72820200").
+	    		zipCodeDestin("72820201").
+	    		description("used to clean teeth").
+	    		status(Status.confirmed).
+	    		build();
+
+	    final Response<Bundle> responseExpected = Response.of(bundleExpected, HttpStatus.OK);
+	    System.out.println("asdasdasd abaixo");
+	    System.out.println(responseExpected.toString());
+	    when(bar.fetchBundleById(anyInt())).thenReturn(responseExpected);
+	    Response<Bundle> bundleResponse = bac.fetchBundleById(1);
+	   assertEquals(responseExpected, bundleResponse);
+
 	}
+	
+	
 
 }

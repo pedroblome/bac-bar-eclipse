@@ -9,52 +9,49 @@ public class BundleBuilder {
 	private String namePackage;
 	private String zipCodeOrigin;
 	private String zipCodeDestin;
+	private String description;
 	private Status status;
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
+
+	public BundleBuilder id(Integer id) {
 		this.id = id;
+		return this;
 	}
-	public String getNamePackage() {
-		return namePackage;
-	}
-	public void setNamePackage(String namePackage) {
+
+	public BundleBuilder namePackage(String namePackage) {
 		this.namePackage = namePackage;
+		return this;
+
 	}
-	public String getZipCodeOrigin() {
-		return zipCodeOrigin;
-	}
-	public void setZipCodeOrigin(String zipCodeOrigin) {
+
+	public BundleBuilder zipCodeOrigin(String zipCodeOrigin) {
 		this.zipCodeOrigin = zipCodeOrigin;
+		return this;
+
 	}
-	public String getZipCodeDestin() {
-		return zipCodeDestin;
-	}
-	public void setZipCodeDestin(String zipCodeDestin) {
+
+	public BundleBuilder zipCodeDestin(String zipCodeDestin) {
 		this.zipCodeDestin = zipCodeDestin;
+		return this;
+
 	}
-	public Status getStatus() {
-		return status;
+
+	public BundleBuilder description(String description) {
+		this.description = description;
+		return this;
+
 	}
-	public void setStatus(Status status) {
+
+	public BundleBuilder status(Status status) {
 		this.status = status;
-	}
-	public BundleBuilder(Integer id, String namePackage, String zipCodeOrigin, String zipCodeDestin, Status status) {
-		super();
-		this.id = id;
-		this.namePackage = namePackage;
-		this.zipCodeOrigin = zipCodeOrigin;
-		this.zipCodeDestin = zipCodeDestin;
-		this.status = status;
-	}
-	@Override
-	public String toString() {
-		return "BundleBuilder [id=" + id + ", namePackage=" + namePackage + ", zipCodeOrigin=" + zipCodeOrigin
-				+ ", zipCodeDestin=" + zipCodeDestin + ", status=" + status + "]";
+		return this;
+
 	}
 
-
-
+	public static BundleBuilder builder() {
+		return new BundleBuilder();
+	}	
+	public Bundle build() {
+		return new Bundle(id, namePackage, zipCodeOrigin, zipCodeDestin, description, status);
+	}
 
 }
