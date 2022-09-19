@@ -2,6 +2,7 @@ package com.qat.crud.domain.Bundle;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,48 +11,51 @@ import com.qat.crud.domain.Bundle.model.Bundle;
 
 public class Response<R> {
 	
-	private List<R> data;
-	private HttpStatus httpStatus;
-	private final List<ValidationError> validationErrors;
-	
-	  private Response(List<R> data, HttpStatus aStatus, List<ValidationError> errors) {
-		    this.data = data;
-		    this.httpStatus = aStatus;
-		    this.validationErrors = errors;
-		  }
-	  
-	  public static <R> Response<R> of(List<R> data, HttpStatus aStatus) {
-		    return new Response<>(data, aStatus, Collections.emptyList());
-		  }
+	  private final List<R> data;
+	  private final STATUSERROR status;
+	  private final List<ValidationError> messages;
 
-		  public static <R> Response<R> of(R data, HttpStatus aStatus) {
-		    return new Response<>(Collections.singletonList(data), aStatus, Collections.emptyList());
-		  }
+	  protected static final List EMPTY_LIST = Collections.emptyList();
 
-		  public static <R> Response<R> of(HttpStatus aStatus , List<ValidationError> errors) {
-		    return new Response<>( null, aStatus, errors);
-		  }
+	  public Response(List<R> data, STATUSERROR aStatus, List<ValidationError> errors) {
+	    this.data = data;
+	    this.status = aStatus;
+	    this.messages = errors;
+	  }
 
-		  public static Response<Bundle> of(HttpStatus aStatus) {
-		    return new Response<>( null, aStatus, Collections.emptyList());
-		  }
+	  public List<R> getData() {
+	    return data;
+	  }
 
-		  public List<R> getData() {
-		    return data;
-		  }
+	  public STATUSERROR getStatus() {
+	    return status;
+	  }
 
+	  public List<ValidationError> getMessages() {
+	    return messages;
+	  }
 
-		  public List<ValidationError> getValidationErrors() {
-		    return validationErrors;
-		  }
+	  public ResponseEntity<?> toResponseEntity() {
+	    return new ResponseResponseEntityAdapter(this);
+	  }
 
-		public HttpStatus getHttpStatus() {
-			return httpStatus;
-		}
+	  @Override
+	  public boolean equals(Object o) {
+	    if (this == o) {
+	      return true;
+	    }
+	    if (o == null || getClass() != o.getClass()) {
+	      return false;
+	    }
+	    Response<?> response = (Response<?>) o;
+	    return Objects.equals(data, response.data) && status == response.status
+	        && Objects.equals(messages, response.messages);
+	  }
 
-		public ResponseEntity<?> toResponseEntity() {
-			return new ResponseEntity<>(this, httpStatus);
-		}
+	  @Override
+	  public int hashCode() {
+	    return Objects.hash(data, status, messages);
+	  }
 
 
 }

@@ -8,37 +8,27 @@ public class BundleValidator extends Validator {
 
 	private final Bundle bundle;
 
-	public BundleValidator(Bundle aBundle) {
-		super();
-		bundle = aBundle;
+	public BundleValidator(Bundle abundle) {
+		bundle = abundle;
 	}
 
 	@Override
-	public Boolean validate() {
+	public void checkValidState() {
 
-		if (bundle.getNamePackage().isEmpty()) {
-			addError("name: ", "name is required to insert bundle");
-		}
-		if (bundle.getZipCodeOrigin().toString().length() != 8) {
-			addError("zipCodeOrigin: ", "zip code must be only 8 digits of numbers.");
-		}
-		if (bundle.getZipCodeDestin().toString().length() != 8) {
-			addError("zipCodeDestin: ", "zip code must be only 8 digits of numbers.");
-		}
-		if(bundle.getDescription().isEmpty()) {
-			addError("description", "description cant be null");
-		}
-		
-		if (bundle.getStatus() != Status.analisys &
-				bundle.getStatus() != Status.confirmed &
-				bundle.getStatus() != Status.route &
-				bundle.getStatus() != Status.waiting_payment) {
+		checkRequired("namePackage", bundle.getNamePackage());
+		checkMaxLength("namePackage", bundle.getNamePackage(), 20);
 
-			addError("status", "status must be confirmed, canceled, analisys, waiting payment or in route");
-		}
+		checkRequired("zipCodeOrigin", bundle.getZipCodeOrigin());
+		checkLength("zipCodeOrigin", bundle.getZipCodeOrigin(), 8);
 
+		checkRequired("zipCodeDestin", bundle.getZipCodeDestin());
+		checkLength("zipCodeDestin", bundle.getZipCodeDestin(), 8);
 
-		return getErrors().isEmpty();
+		checkRequired("description", bundle.getDescription());
+		checkMaxLength("description", bundle.getDescription(), 60);
+
+		checkStatus("status", bundle.getStatus());
+
 	}
 
 }

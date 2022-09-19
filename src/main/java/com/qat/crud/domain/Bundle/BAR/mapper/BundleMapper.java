@@ -1,4 +1,4 @@
-package com.qat.crud.domain.Bundle.BAR;
+package com.qat.crud.domain.Bundle.BAR.mapper;
 
 import java.util.List;
 
@@ -15,15 +15,15 @@ import com.qat.crud.domain.Bundle.model.Bundle;
 @Mapper
 public interface BundleMapper {
 	
-	@Insert("insert into bundle (\"namePackage\", \"zipCodeOrigin\", \"zipCodeDestin\", \"description\", \"status\")   values(#{namePackage}, #{zipCodeOrigin}, #{zipCodeDestin}, #{description}, #{status}) ")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
-	boolean insert (Bundle bundle);
-	
 	@Select("select * from bundle")
 	List<Bundle> fetchAll();
 	
 	@Select("select * from bundle where \"id\" = #{id}")
 	Bundle fetchById(@Param("id") int id);
+	
+	@Insert("insert into bundle (\"namePackage\", \"zipCodeOrigin\", \"zipCodeDestin\", \"description\", \"status\")   values(#{namePackage}, #{zipCodeOrigin}, #{zipCodeDestin}, #{description}, #{status}) ")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+	boolean insert (Bundle bundle);
 
 	@Update("update bundle set \"namePackage\" = #{namePackage}, \"zipCodeOrigin\" = #{zipCodeOrigin}, \"zipCodeDestin\" = #{zipCodeDestin}, \"description\" = #{description}, \"status\" = #{status} where \"id\" = #{id} ")
 	boolean updatedById(Bundle bundle);

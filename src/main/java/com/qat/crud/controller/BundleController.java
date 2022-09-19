@@ -1,14 +1,8 @@
 package com.qat.crud.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.qat.crud.domain.Bundle.Response;
 import com.qat.crud.domain.Bundle.BAC.BundleBAC;
 import com.qat.crud.domain.Bundle.model.Bundle;
+import com.qat.crud.domain.Bundle.model.BundleRequest;
+import com.qat.crud.domain.Bundle.model.BundleResponse;
 
 @RestController
 @RequestMapping("/bundle")
@@ -27,68 +23,72 @@ public class BundleController {
 		this.bac = bac;
 	}
 	
-
-	@GetMapping("/fetch-all")
-	public ResponseEntity<?> listAllBundle() {
-	    try{
-	        Response<Bundle> response = bac.fetchAllBundles();
-	        return response.toResponseEntity();
-
-	      }catch (Exception e){
-		        Response<String> response = Response.of(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-		        return  response.toResponseEntity();
-	      }
-	}
-	@GetMapping("/fetch-byId/{id}")
-	public ResponseEntity<?> listByIdBundle(@PathVariable Integer id) {
-	    try{
-	        Response<Bundle> response = bac.fetchBundleById(id);
-	        return response.toResponseEntity();
-
-	      }catch (Exception e){
-	        Response<String> response = Response.of(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-	        return  response.toResponseEntity();
-	      }
-
-	}
-
-	@PostMapping("/create")
-	public ResponseEntity<?> createBundle(@RequestBody Bundle bundleData) {
-	    try{
-	        Response<Bundle> response = bac.insertBundle(bundleData);
-	        return response.toResponseEntity();
-
-	      }catch (Exception e){
-	        Response<String> response = Response.of(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-	        return  response.toResponseEntity();
-	      }
-
-	}
-
-	@PutMapping("/update")
-	public ResponseEntity<?> updateBundle(@RequestBody Bundle bundleData) {
-	    try{
-	        Response<Bundle> response = bac.updateBundle(bundleData);
-	        return response.toResponseEntity();
-
-	      }catch (Exception e){
-	        Response<String> response = Response.of(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-	        return  response.toResponseEntity();
-	      }
-
-
-	}
-	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteBundle(@PathVariable Integer id) {
-	    try{
-	        Response<Bundle> response = bac.deleteBundleById(id);
-	        return response.toResponseEntity();
-
-	      }catch (Exception e){
-	        Response<String> response = Response.of(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-	        return  response.toResponseEntity();
-	      }
-
 	
+	  private final String FETCHALL = "/bundle/fetch-all";
+	  private final String FETCHBYID = "/bundle/fetch-by-id";
+	  private final String INSERT = "/bundle/insert";
+	  private final String UPDATE = "/bundle/update";
+	  private final String DELETE = "/bundle/delete";
+
+	@PostMapping(FETCHALL)
+	public ResponseEntity<?> listAllBundle(@RequestBody BundleRequest request) {
+		try {
+			Response<Bundle> response = bac.fetchAllBundles(request);
+			return response.toResponseEntity();
+
+		} catch (Exception e) {
+		      return new BundleResponse(e).toResponseEntity();
+		}
+	}
+
+	@PostMapping(FETCHBYID)
+	public ResponseEntity<?> listByIdBundle(@RequestBody BundleRequest request) {
+		try {
+			Response<Bundle> response = bac.fetchBundleById(request);
+			return response.toResponseEntity();
+
+		} catch (Exception e) {
+		      return new BundleResponse(e).toResponseEntity();
+
+		}
+
+	}
+
+	@PostMapping(INSERT)
+	public ResponseEntity<?> createBundle(@RequestBody BundleRequest request) {
+		try {
+			Response<Bundle> response = bac.insertBundle(request);
+			return response.toResponseEntity();
+
+		} catch (Exception e) {
+		      return new BundleResponse(e).toResponseEntity();
+
+		}
+
+	}
+
+	@PostMapping(UPDATE)
+	public ResponseEntity<?> updateBundle(@RequestBody BundleRequest request) {
+		try {
+			Response<Bundle> response = bac.updateBundle(request);
+			return response.toResponseEntity();
+
+		} catch (Exception e) {
+		      return new BundleResponse(e).toResponseEntity();
+
+		}
+
+	}
+
+	@PostMapping(DELETE)
+	public ResponseEntity<?> deleteBundle(@RequestBody BundleRequest request) {
+		try {
+			return bac.deleteBundleById(request).toResponseEntity();
+
+		} catch (Exception e) {
+		      return new BundleResponse(e).toResponseEntity();
+
+		}
+
 	}
 }

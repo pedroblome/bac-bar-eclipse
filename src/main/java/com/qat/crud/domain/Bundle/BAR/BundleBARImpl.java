@@ -7,7 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import com.qat.crud.domain.Bundle.Response;
+import com.qat.crud.domain.Bundle.STATUSERROR;
+import com.qat.crud.domain.Bundle.BAR.mapper.BundleMapper;
 import com.qat.crud.domain.Bundle.model.Bundle;
+import com.qat.crud.domain.Bundle.model.BundleRequest;
+import com.qat.crud.domain.Bundle.model.BundleResponse;
 
 @Repository
 public class BundleBARImpl implements BundleBAR {
@@ -19,48 +23,50 @@ public class BundleBARImpl implements BundleBAR {
 	}
 
 	@Override
-	public Response<Bundle> fetchAllBundles() {
+	public Response<Bundle> fetchAllBundles(BundleRequest request) {
 
-		return Response.of(mapper.fetchAll(), HttpStatus.OK);
+		return new BundleResponse(mapper.fetchAll(), STATUSERROR.OPERATIONSUCCESS);
 	}
 
 	@Override
-	public Response<Bundle> fetchBundleById(Integer id) {
-		Bundle bundle = mapper.fetchById(id);
+	public Response<Bundle> fetchBundleById(BundleRequest request) {
+		final Bundle bundle = mapper.fetchById(request.getId());
 		if (Objects.nonNull(bundle)) {
-			return Response.of(bundle, HttpStatus.OK);
+			return new BundleResponse(bundle, STATUSERROR.OPERATIONSUCCESS);
 		} else {
-			return Response.of(HttpStatus.NOT_FOUND);
+			return new BundleResponse( STATUSERROR.NOROWSFOUNDERROR);
 		}
 	}
 
 	@Override
-	public Response<Bundle> insertBundle(Bundle bundle) {
-		if (mapper.insert(bundle)) {
-			return Response.of(bundle, HttpStatus.OK);
-		} else {
-			return Response.of(HttpStatus.BAD_REQUEST);
-		}
-
-	}
-
-	@Override
-	public Response<Bundle> updateBundle(Bundle bundle) {
-		if(mapper.updatedById(bundle)) {
-			return Response.of(bundle, HttpStatus.OK);
+	public Response<Bundle> insertBundle(BundleRequest request) {
+		final Bundle bundle = request.getData();
+		if(mapper.insert(bundle)) {
+			return new BundleResponse(bundle, STATUSERROR.OPERATIONSUCCESS);
 		}else {
-		      return Response.of(HttpStatus.BAD_REQUEST);
+			return new BundleResponse(STATUSERROR.PERSISTENCEERROR);
+		}
 
-		}	
 	}
 
 	@Override
-	public Response<Bundle> deleteBundleById(Integer id) {
-		if(mapper.deleteById(id)) {
-			return Response.of(HttpStatus.OK);
+	public Response<Bundle> updateBundle(BundleRequest request) {
+		final Bundle bundle = request.getData();
+		if(mapper.insert(bundle)) {
+			return new BundleResponse(bundle, STATUSERROR.OPERATIONSUCCESS);
+		}else {
+			return new BundleResponse(STATUSERROR.PERSISTENCEERROR);
 		}
-		else {
-			return Response.of(HttpStatus.BAD_REQUEST);
+	}
+
+	@Override
+	public Response<Bundle> deleteBundleById(BundleRequest request) {
+		final Bundle bundle = request.getData();
+		if(mapper.deleteById(bundle.getId())) {
+			return new BundleResponse(STATUSERROR.OPERATIONSUCCESS);
+		}else {
+			return new BundleResponse(STATUSERROR.NOROWSREMOVEDERROR);
+
 		}
 	}
 
