@@ -1,5 +1,8 @@
 package com.qat.crud.BAR;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Assertions;
 
@@ -12,15 +15,15 @@ import com.qat.crud.domain.Bundle.model.Bundle;
 import com.qat.crud.domain.Bundle.model.Status;
 
 @ExtendWith(MockitoExtension.class)
-public class BundleTest {
+public class BundleBuilderTest {
 	
 	  @Test
 	  public void TestBuilderInstantiation() {
 
-	    final Bundle bundleExpected =
+	     Bundle bundleExpected =
 	        new Bundle(1, "name", "72820200", "72820201", "description", Status.confirmed);
 
-	    final Bundle bundleActual1 =
+	     Bundle bundleActual1 =
 	        BundleBuilder.builder()
 	            .id(1).namePackage("name").zipCodeOrigin("72820200").zipCodeDestin("72820201").description("description").status(Status.confirmed)
 	            .build();
@@ -35,6 +38,8 @@ public class BundleTest {
 
 	    assertEquals( bundleActual1,bundleExpected);
 	    assertEquals( bundleActual2,bundleExpected);
+
+
 
 	  }
 

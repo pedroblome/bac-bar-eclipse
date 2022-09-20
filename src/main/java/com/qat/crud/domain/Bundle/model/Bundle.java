@@ -1,5 +1,7 @@
 package com.qat.crud.domain.Bundle.model;
 
+import java.util.Objects;
+
 public class Bundle {
 	public Bundle() {
 		
@@ -63,6 +65,25 @@ public class Bundle {
 		return "Bundle [id=" + id + ", namePackage=" + namePackage + ", zipCodeOrigin=" + zipCodeOrigin
 				+ ", zipCodeDestin=" + zipCodeDestin + ", description=" + description + ", status=" + status + "]";
 	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(description, id, namePackage, status, zipCodeDestin, zipCodeOrigin);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Bundle other = (Bundle) obj;
+		return Objects.equals(description, other.description) && Objects.equals(id, other.id)
+				&& Objects.equals(namePackage, other.namePackage) && status == other.status
+				&& Objects.equals(zipCodeDestin, other.zipCodeDestin)
+				&& Objects.equals(zipCodeOrigin, other.zipCodeOrigin);
+	}
+	
 	
 	
 	

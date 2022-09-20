@@ -18,19 +18,19 @@ import org.springframework.stereotype.Component;
 	  Logger log = LoggerFactory.getLogger(ExecutionTimeAdvice.class);
 
 	  // Anotation to track execution time of a method
-	  @Around("@annotation(com.qat.employee.aspect.TrackExecutionTime)")
+	  @Around("@annotation(com.qat.crud.aspect.TrackExecutionTime)")
 	  public Object executionTime(ProceedingJoinPoint point) throws Throwable {
 	    return logExecutionTime(point);
 	  }
 
 	  // Log execution time of BAC methods
-	  @Around("execution(*  com.qat.employee.domain.employee.BAC.*.*(..))")
+	  @Around("execution(*  com.qat.crud.domain.Bundle.BAC.*.*(..))")
 	  public Object executionTimeBAC(ProceedingJoinPoint point) throws Throwable {
 	    return logExecutionTime(point);
 	  }
 
 	  // Log execution time of BAR methods
-	  @Around("execution(* com.qat.employee.domain.employee.BAR.*.*(..))")
+      @Around("execution(*  com.qat.crud.domain.Bundle.BAR.*.*(..))")
 	  public Object executionTimeBAR(ProceedingJoinPoint point) throws Throwable {
 	    return logExecutionTime(point);
 	  }

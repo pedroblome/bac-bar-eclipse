@@ -14,7 +14,7 @@ import com.qat.crud.domain.Bundle.model.BundleRequest;
 import com.qat.crud.domain.Bundle.model.BundleResponse;
 
 @RestController
-@RequestMapping("/bundle")
+@RequestMapping()
 public class BundleController {
 	@Autowired
 	private final BundleBAC bac;
