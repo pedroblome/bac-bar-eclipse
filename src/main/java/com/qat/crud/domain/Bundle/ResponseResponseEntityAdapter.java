@@ -7,7 +7,7 @@ public class ResponseResponseEntityAdapter extends ResponseEntity {
 
 	private final Response response;
 	public ResponseResponseEntityAdapter(Response response) {
-		 super(response, parseStatusToHttpStatus(response.getStatus()));
+		 super(response, parseStatusToHttpStatus(response.getStatusError()));
 		    this.response = response;
 	}
 	

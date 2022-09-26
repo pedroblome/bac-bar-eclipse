@@ -1,49 +1,74 @@
 package com.qat.crud.domain.Bundle;
 
+import java.util.List;
 import java.util.Objects;
 
-public abstract class Request<T, ID> {
+public abstract class Request<T, ID, O> {
 
-	  private final ID id;
-	  private final T data;
+    private ID id;
+    private T data;
+    private List<T> dataList;
 
-	  public Request(ID id, T data) {
-	    this.id = id;
-	    this.data = data;
-	  }
+    public ID getId() {
+        return id;
+    }
 
-	  public ID getId() {
-	    return id;
-	  }
+    public T getData() {
+        return data;
+    }
+    
+    public List<T> getDataList() {
+        return dataList;
+    }
+    
 
-	  public T getData() {
-	    return data;
-	  }
+    public O withId(ID id) {
+        setId(id);
+        return (O) this;
+    }
 
-	  @Override
-	  public String toString() {
-	    final StringBuffer sb = new StringBuffer("Request{");
-	    sb.append("id=").append(id);
-	    sb.append(", data=").append(data);
-	    sb.append('}');
-	    return sb.toString();
-	  }
+    public O withData(T data) {
+        setData(data);
+        return (O) this;
+    }
 
-	  @Override
-	  public boolean equals(Object o) {
-	    if (this == o) {
-	      return true;
-	    }
-	    if (!(o instanceof Request)) {
-	      return false;
-	    }
-	    Request<?, ?> request = (Request<?, ?>) o;
-	    return Objects.equals(id, request.id) && Objects.equals(data, request.data);
-	  }
+    public O withDataList(List<T> dataList) {
+        setDataList(dataList);
+        return (O) this;
+    }
 
-	  @Override
-	  public int hashCode() {
-	    return Objects.hash(id, data);
-	  }
+    public void setId(ID id) {
+        this.id = id;
+    }
 
-	}
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public void setDataList(List<T> dataList) {
+        this.dataList = dataList;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(data, dataList, id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Request other = (Request) obj;
+        return Objects.equals(data, other.data) && Objects.equals(dataList, other.dataList) && Objects.equals(id, other.id);
+    }
+
+    @Override
+    public String toString() {
+        return "Request [id=" + id + ", data=" + data + ", dataList=" + dataList + "]";
+    }
+
+}

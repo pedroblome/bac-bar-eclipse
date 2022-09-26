@@ -14,7 +14,7 @@ import com.qat.crud.domain.Bundle.model.BundleRequest;
 import com.qat.crud.domain.Bundle.model.BundleResponse;
 
 @RestController
-@RequestMapping()
+@RequestMapping("/bundle")
 public class BundleController {
 	@Autowired
 	private final BundleBAC bac;
@@ -24,71 +24,68 @@ public class BundleController {
 	}
 	
 	
-	  private final String FETCHALL = "/bundle/fetch-all";
-	  private final String FETCHBYID = "/bundle/fetch-by-id";
-	  private final String INSERT = "/bundle/insert";
-	  private final String UPDATE = "/bundle/update";
-	  private final String DELETE = "/bundle/delete";
+	  private final String FETCHALL = "/fetch-all";
+	  private final String FETCHBYID = "/fetch-by-id";
+	  private final String INSERT = "/insert";
+	  private final String UPDATE = "/update";
+	  private final String DELETE = "/delete";
 
 	@PostMapping(FETCHALL)
 	public ResponseEntity<?> listAllBundle(@RequestBody BundleRequest request) {
-		try {
-			Response<Bundle> response = bac.fetchAllBundles(request);
-			return response.toResponseEntity();
+	    try {
+	        BundleResponse response = bac.fetchAllBundles(request);
+	        return response.toResponseEntity();
 
-		} catch (Exception e) {
-		      return new BundleResponse(e).toResponseEntity();
-		}
+	      } catch (Exception exception) {
+	        return new BundleResponse().withException(exception).toResponseEntity();
+	      }
+
 	}
 
 	@PostMapping(FETCHBYID)
 	public ResponseEntity<?> listByIdBundle(@RequestBody BundleRequest request) {
-		try {
-			Response<Bundle> response = bac.fetchBundleById(request);
-			return response.toResponseEntity();
+        try {
+            BundleResponse response = bac.fetchBundleById(request);
+            return response.toResponseEntity();
 
-		} catch (Exception e) {
-		      return new BundleResponse(e).toResponseEntity();
-
-		}
+          } catch (Exception exception) {
+            return new BundleResponse().withException(exception).toResponseEntity();
+          }
 
 	}
 
 	@PostMapping(INSERT)
 	public ResponseEntity<?> createBundle(@RequestBody BundleRequest request) {
-		try {
-			Response<Bundle> response = bac.insertBundle(request);
-			return response.toResponseEntity();
+        try {
+            BundleResponse response = bac.insertBundle(request);
+            return response.toResponseEntity();
 
-		} catch (Exception e) {
-		      return new BundleResponse(e).toResponseEntity();
-
-		}
+          } catch (Exception exception) {
+            return new BundleResponse().withException(exception).toResponseEntity();
+          }
 
 	}
 
 	@PostMapping(UPDATE)
 	public ResponseEntity<?> updateBundle(@RequestBody BundleRequest request) {
-		try {
-			Response<Bundle> response = bac.updateBundle(request);
-			return response.toResponseEntity();
+        try {
+            BundleResponse response = bac.updateBundle(request);
+            return response.toResponseEntity();
 
-		} catch (Exception e) {
-		      return new BundleResponse(e).toResponseEntity();
-
-		}
+          } catch (Exception exception) {
+            return new BundleResponse().withException(exception).toResponseEntity();
+          }
 
 	}
 
 	@PostMapping(DELETE)
 	public ResponseEntity<?> deleteBundle(@RequestBody BundleRequest request) {
-		try {
-			return bac.deleteBundleById(request).toResponseEntity();
+        try {
+            BundleResponse response = bac.deleteBundleById(request);
+            return response.toResponseEntity();
 
-		} catch (Exception e) {
-		      return new BundleResponse(e).toResponseEntity();
-
-		}
-
+          } catch (Exception exception) {
+            return new BundleResponse().withException(exception).toResponseEntity();
+          }
 	}
 }

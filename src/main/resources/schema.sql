@@ -13,8 +13,5 @@ CREATE TABLE bundle (
     "status" "enum_status" not null,
     PRIMARY KEY ("id")
 );
-insert into bundle("namePackage", "zipCodeOrigin", "zipCodeDestin", "description", "status")  values('escova de dente', '72668400', '74968080', 'higiene bucal', 'confirmed');
-insert into bundle("namePackage", "zipCodeOrigin", "zipCodeDestin", "description", "status")  values('creme dental', '72668400', '74968080', 'higiene bucal', 'confirmed');
-insert into bundle("namePackage", "zipCodeOrigin", "zipCodeDestin", "description", "status")  values('fio dental', '72668400', '74968080', 'higiene bucal', 'confirmed');
-insert into bundle("namePackage", "zipCodeOrigin", "zipCodeDestin", "description", "status")  values('toalha de banho', '72668400', '74968080', 'roupa de banho', 'confirmed');
-insert into bundle("namePackage", "zipCodeOrigin", "zipCodeDestin", "description", "status")  values('cortina', '72668400', '74968080', 'acessório para casa', 'waiting_payment');
+--insert into bundle("namePackage", "zipCodeOrigin", "zipCodeDestin", "description", "status")  values('monitor', '72820200', '72820201', 'used in computer', 'confirmed');
+--insert into bundle("namePackage", "zipCodeOrigin", "zipCodeDestin", "description", "status")  values('monitor', '72820200', '72820201', 'used in computer', 'confirmed');

@@ -1,7 +1,7 @@
 package com.qat.crud.BAR;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -13,7 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.qat.crud.domain.Bundle.Response;
 import com.qat.crud.domain.Bundle.STATUSERROR;
 import com.qat.crud.domain.Bundle.BAR.BundleBARImpl;
 import com.qat.crud.domain.Bundle.BAR.BundleBuilder;
@@ -33,89 +32,91 @@ class BundleBARTest {
 
 	private Bundle givenBundle() {
 		return givenBundle(1);
-	}
+    }
 
-	private Bundle givenBundle(Integer id) {
-		return BundleBuilder.builder().id(id).namePackage("monitor").zipCodeOrigin("72820200").zipCodeDestin("72820201")
-				.description("used in computer").status(Status.confirmed).build();
-	}
+    private Bundle givenBundle(Integer id) {
+        return BundleBuilder.builder().id(id).namePackage("monitor").zipCodeOrigin("72820200").zipCodeDestin("72820201")
+                .description("used in computer").status(Status.confirmed).build();
+    }
 
-	private List<Bundle> givenBundles() {
-		return List.of(givenBundle(1), givenBundle(2));
-	}
+    private List<Bundle> givenBundles() {
+        return List.of(givenBundle(1), givenBundle(2), givenBundle(3));
+    }
 
-	@Test
-	public void testFetchAllBundles() {
+    @Test
+     void testFetchAllBundles() {
 
-		final List<Bundle> bundleExpected = givenBundles();
-		final BundleResponse responseExpected = new BundleResponse(bundleExpected, STATUSERROR.OPERATIONSUCCESS);
+        final List<Bundle> bundleExpected = givenBundles();
+        final BundleResponse responseExpected = new BundleResponse().withDataList(bundleExpected).withStatus(STATUSERROR.OPERATIONSUCCESS);
 
-		BundleRequest request = new BundleRequest();
-		when(bundleMapper.fetchAll()).thenReturn(bundleExpected);
+        BundleRequest request = new BundleRequest();
+        when(bundleMapper.fetchAll()).thenReturn(bundleExpected);
 
-		Response<Bundle> bundlesResponse = bar.fetchAllBundles(request);
-		Assertions.assertEquals(responseExpected, bundlesResponse);
+        BundleResponse bundlesResponse = bar.fetchAllBundles(request);
+        Assertions.assertEquals(responseExpected, bundlesResponse);
 
-	}
+    }
 
-	@Test
-	public void testFetchBundleById() {
+    @Test
+     void testFetchBundleById() {
 
-		final Bundle bundleExpected = givenBundle();
-		final BundleResponse responseExpected = new BundleResponse(bundleExpected, STATUSERROR.OPERATIONSUCCESS);
+        final Bundle bundleExpected = givenBundle();
+        final BundleResponse responseExpected = new BundleResponse().withData(bundleExpected).withStatus(STATUSERROR.OPERATIONSUCCESS);
 
-		BundleRequest request = new BundleRequest(1);
-		when(bundleMapper.fetchById(1)).thenReturn(bundleExpected);
+        BundleRequest request = new BundleRequest().withData(bundleExpected);
+        when(bundleMapper.fetchById(1)).thenReturn(bundleExpected);
 
-		Response<Bundle> bundleResponse = bar.fetchBundleById(request);
-		Assertions.assertEquals(responseExpected, bundleResponse);
+        BundleResponse bundleResponse = bar.fetchBundleById(request);
+        Assertions.assertEquals(responseExpected, bundleResponse);
 
-	}
+    }
 
-	@Test
-	public void testInsertBundle() {
+    @Test
+	 void testInsertBundle() {
 
-		final Bundle bundleExpected = givenBundle();
-		final BundleResponse responseExpected = new BundleResponse(bundleExpected, STATUSERROR.OPERATIONSUCCESS);
+        final Bundle bundleExpected = givenBundle();
+        final BundleResponse responseExpected = new BundleResponse().withData(bundleExpected).withStatus(STATUSERROR.OPERATIONSUCCESS);
 
-		BundleRequest request = new BundleRequest(bundleExpected);
-		when(bundleMapper.insert(any(Bundle.class))).thenReturn(true);
+        BundleRequest request = new BundleRequest().withData(bundleExpected);
+        when(bundleMapper.insert(any(Bundle.class))).thenReturn(true);
 
-		Response<Bundle> bundleResponse = bar.insertBundle(request);
-		System.out.println(bundleExpected);
-		System.out.println(bundleResponse);
+        BundleResponse bundleResponse = bar.insertBundle(request);
 
-		Assertions.assertEquals(responseExpected, bundleResponse);
+        Assertions.assertEquals(responseExpected, bundleResponse);
 
 	}
 
-	@Test
-	public void testUpdateBundleById() {
+    @Test
+     void testUpdateBundleById() {
 
-		final Bundle bundleExpected = givenBundle();
-		final BundleResponse responseExpected = new BundleResponse(bundleExpected, STATUSERROR.OPERATIONSUCCESS);
+        final Bundle bundleExpected = givenBundle();
+        final BundleResponse responseExpected = new BundleResponse().withData(bundleExpected).withStatus(STATUSERROR.OPERATIONSUCCESS);
 
-		BundleRequest request = new BundleRequest(bundleExpected);
-		when(bundleMapper.updatedById(bundleExpected)).thenReturn(true);
+        BundleRequest request = new BundleRequest().withData(bundleExpected);
+        when(bundleMapper.updatedById(any(Bundle.class))).thenReturn(true);
 
-		Response<Bundle> bundleResponse = bar.updateBundle(request);
+        BundleResponse bundleResponse = bar.updateBundle(request);
 
-		Assertions.assertEquals(responseExpected, bundleResponse);
 
-	}
+        Assertions.assertEquals(responseExpected, bundleResponse);
 
-	@Test
-	public void testDeleteBundleById() {
+    }
 
-		final Bundle bundleExpected = givenBundle();
-		final BundleResponse responseExpected = new BundleResponse(STATUSERROR.OPERATIONSUCCESS);
+    @Test
+     void testDeleteBundleById() {
+        final Bundle bundleExpected = givenBundle();
 
-		BundleRequest request = new BundleRequest(bundleExpected);
-		when(bundleMapper.deleteById(1)).thenReturn(true);
+        final BundleResponse responseExpected = new BundleResponse().withStatus(STATUSERROR.OPERATIONSUCCESS);
 
-		Response<Bundle> bundleResponse = bar.deleteBundleById(request);
-		Assertions.assertEquals(responseExpected, bundleResponse);
+        BundleRequest request = new BundleRequest().withData(bundleExpected);
+        when(bundleMapper.deleteById(anyInt())).thenReturn(true);
 
-	}
+        BundleResponse bundleResponse = bar.deleteBundleById(request);
+
+
+
+        Assertions.assertEquals(responseExpected, bundleResponse);
+
+    }
 
 }

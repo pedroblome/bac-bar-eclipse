@@ -15,54 +15,53 @@ import com.qat.crud.domain.Bundle.model.BundleResponse;
 @Component
 public class BundleBACImpl implements BundleBAC {
 
+    @Autowired
+    private BundleBAR bar;
 
-	@Autowired
-	private BundleBAR bar;
-	
-	public BundleBACImpl(BundleBAR bar) {
-		this.bar = bar;
-	}
+    public BundleBACImpl(BundleBAR bar) {
+        this.bar = bar;
+    }
 
+    @Override
+    public BundleResponse fetchAllBundles(BundleRequest request) {
+        return bar.fetchAllBundles(request);
 
+    }
 
-	@Override
-	public Response<Bundle> fetchAllBundles(BundleRequest request) {
-		return bar.fetchAllBundles(request);
+    @Override
+    public BundleResponse fetchBundleById(BundleRequest request) {
+        return bar.fetchBundleById(request);
+    }
 
-	}
+    @Override
+    public BundleResponse insertBundle(BundleRequest request) {
+        Validator validator = new BundleValidator(request.getData());
+        if (!validator.validate()) {
+            return new BundleResponse().withStatus(STATUSERROR.VALIDATIONERROR).withMessages(validator.getErrors());
+        }
+        else {
+            return bar.insertBundle(request);
+        }
+    }
 
-	@Override
-	public Response<Bundle> fetchBundleById(BundleRequest request) {
-		return bar.fetchBundleById(request);
-	}
+    @Override
+    public BundleResponse updateBundle(BundleRequest request) {
 
-	@Override
-	public Response<Bundle> insertBundle(BundleRequest request) {
-		Validator validator = new BundleValidator(request.getData());
-		if (!validator.validate()) {
-			return new BundleResponse(STATUSERROR.VALIDATIONERROR, validator.getErrors());
-		} else {
-			return bar.insertBundle(request);
-		}
-	}
+        Validator validator = new BundleValidator(request.getData());
+        if (!validator.validate()) {
+            return new BundleResponse().withStatus(STATUSERROR.VALIDATIONERROR).withMessages(validator.getErrors());
+        }
+        else {
+            return bar.updateBundle(request);
+        }
 
-	@Override
-	public Response<Bundle> updateBundle(BundleRequest request) {
+    }
 
-		Validator validator = new BundleValidator(request.getData());
-		if (!validator.validate()) {
-			return new BundleResponse(STATUSERROR.VALIDATIONERROR, validator.getErrors());
-		} else {
-			return bar.updateBundle(request);
-		}
+    @Override
+    public BundleResponse deleteBundleById(BundleRequest request) {
 
-	}
+        return bar.deleteBundleById(request);
 
-	@Override
-	public Response<Bundle> deleteBundleById(BundleRequest request) {
-
-		return bar.deleteBundleById(request);
-
-	}
+    }
 
 }
