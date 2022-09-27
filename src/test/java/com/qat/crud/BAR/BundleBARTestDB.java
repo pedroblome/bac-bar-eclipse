@@ -41,7 +41,7 @@ class BundleBARTestDB {
     @Order(1)
     void InsertBundle() {
 
-        final Bundle bundleExpected = givenBundle();
+        final Bundle bundleExpected = givenBundle(1);
         final BundleResponse responseExpected = new BundleResponse().withData(bundleExpected).withStatus(STATUSERROR.OPERATIONSUCCESS);
 
         BundleRequest request = new BundleRequest().withData(bundleExpected);
@@ -82,7 +82,7 @@ class BundleBARTestDB {
     @Test
     @Order(4)
     void updateBundleById() {
-        final Bundle bundleExpected = givenBundle();
+        final Bundle bundleExpected = givenBundle(1);
         final BundleResponse responseExpected = new BundleResponse().withData(bundleExpected).withStatus(STATUSERROR.OPERATIONSUCCESS);
 
         BundleRequest request = new BundleRequest().withData(bundleExpected);
@@ -96,7 +96,7 @@ class BundleBARTestDB {
     @Test
     @Order(5)
     void deleteBundleById() {
-        final Bundle bundleExpected = givenBundle();
+        final Bundle bundleExpected = givenBundle(1);
         final BundleResponse responseExpected = new BundleResponse().withStatus(STATUSERROR.OPERATIONSUCCESS);
 
         BundleRequest request = new BundleRequest().withData(bundleExpected);
