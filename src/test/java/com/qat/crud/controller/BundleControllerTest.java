@@ -36,19 +36,38 @@ class BundleControllerTest extends BaseTest {
 	  private final String UPDATE = "/bundle/update";
 	  private final String DELETE = "/bundle/delete";
 	  
+	  
+
+	  private Bundle givenBundle() {
+	    return givenBundle(1);
+	  }
+
+	  private Bundle givenBundle(Integer id) {
+	    return BundleBuilder
+	        .builder()
+	        .id(id).namePackage("Mateus").zipCodeOrigin("example@gmail.com").zipCodeDestin("abc").description("123456").status(Status.analisys)
+	        .build();
+	  }
+
+	  private List<Bundle> givenBundles() {
+	    return List.of(
+	        givenBundle(1), givenBundle(2)
+	    );
+	  }
+	  
 
 	  @Test
-	  public void listAllBundle() throws Exception {
+	  public void fetchList() throws Exception {
 
-	    BundleRequest givenRequest = new BundleRequest();
+	    BundleRequest request = new BundleRequest();
 	    final BundleResponse responseExpected = new BundleResponse()
-	        .withData(givenEmployees())
-	        .withStatus(STATUS.OPERATIONSUCCESS);
+	        .withData(givenBundle())
+	        .withStatus(STATUSERROR.OPERATIONSUCCESS);
 
-	    when(BAC.fetchAllEmployees(givenRequest)).thenReturn(responseExpected);
+	    when(bac.fetchAllBundles(request)).thenReturn(responseExpected);
 
-	    final RequestBuilder request = createRequest(FETCHALL, givenRequest);
-	    final MvcResult response = performRequest(request);
+	    final RequestBuilder requestController = createRequest(FETCHALL, request);
+	    final MvcResult response = performRequestAndReturn(requestController);
 
 	    assertJsonEquals(response, responseExpected);
 	  }

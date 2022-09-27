@@ -29,10 +29,9 @@ public class BundleBACTest {
 
     @Mock
     BundleBAR bar;
-    
+
     @InjectMocks
     BundleBACImpl bac;
-
 
     private Bundle givenBundle() {
         return givenBundle(1);
@@ -150,30 +149,15 @@ public class BundleBACTest {
         final Bundle bundle = new Bundle();
         bundle.setNamePackage(null);
 
-
         final BundleResponse responseExpected = new BundleResponse().withStatus(STATUSERROR.VALIDATIONERROR).withMessages(List.of(
                 ValidationError.of("namePackage", "namePackage is required")));
-        
+
         BundleRequest request = new BundleRequest().withData(bundle);
 
         BundleResponse bundleResponse = bac.insertBundle(request);
         assertEquals(responseExpected.getStatusError(), bundleResponse.getStatusError());
         assertEquals(responseExpected.getData(), bundleResponse.getData());
-        
 
     }
-//    @Test
-//    public void testValidations() {
-//        final Employee givenEmployee = new Employee();
-//        givenEmployee.setName(null);
-//        final EmployeeResponse responseExpected = new EmployeeResponse()
-//            .withStatus(STATUS.VALIDATIONERROR)
-//            .withMessages(List.of(ValidationError.of("name", "name is required")));
-//        EmployeeRequest givenRequest = new EmployeeRequest().withData(givenEmployee);
-//        //when(bar.insertEmployee(givenRequest)).thenReturn(responseExpected);
-//
-//        EmployeeResponse employeesResponse = bac.insertEmployee(givenRequest);
-//        assertEquals(responseExpected.getStatus(), employeesResponse.getStatus());
-//        assertEquals(responseExpected.getData(), employeesResponse.getData());
-//    }
+
 }
