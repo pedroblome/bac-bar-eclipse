@@ -57,7 +57,7 @@ class BundleControllerTest extends BaseTest {
 	  
 
 	  @Test
-	  public void fetchList() throws Exception {
+	  public void listAllBundleTest() throws Exception {
 
 	    BundleRequest request = new BundleRequest();
 	    final BundleResponse responseExpected = new BundleResponse()
@@ -71,6 +71,76 @@ class BundleControllerTest extends BaseTest {
 
 	    assertJsonEquals(response, responseExpected);
 	  }
+	  
+	  
+
+      @Test
+      public void listByIdBundle() throws Exception {
+
+        BundleRequest request = new BundleRequest();
+        final BundleResponse responseExpected = new BundleResponse()
+            .withData(givenBundle())
+            .withStatus(STATUSERROR.OPERATIONSUCCESS);
+
+        when(bac.fetchBundleById(request)).thenReturn(responseExpected);
+
+        final RequestBuilder requestController = createRequest(FETCHBYID, request);
+        final MvcResult response = performRequestAndReturn(requestController);
+
+        assertJsonEquals(response, responseExpected);
+      }
+      
+      @Test
+      public void createBundle() throws Exception {
+
+        BundleRequest request = new BundleRequest();
+        final BundleResponse responseExpected = new BundleResponse()
+            .withData(givenBundle())
+            .withStatus(STATUSERROR.OPERATIONSUCCESS);
+
+        when(bac.insertBundle(request)).thenReturn(responseExpected);
+
+        final RequestBuilder requestController = createRequest(INSERT, request);
+        final MvcResult response = performRequestAndReturn(requestController);
+
+        assertJsonEquals(response, responseExpected);
+      }
+      
+      
+      @Test
+      public void updateBundle() throws Exception {
+
+        BundleRequest request = new BundleRequest();
+        final BundleResponse responseExpected = new BundleResponse()
+            .withData(givenBundle())
+            .withStatus(STATUSERROR.OPERATIONSUCCESS);
+
+        when(bac.updateBundle(request)).thenReturn(responseExpected);
+
+        final RequestBuilder requestController = createRequest(UPDATE, request);
+        final MvcResult response = performRequestAndReturn(requestController);
+
+        assertJsonEquals(response, responseExpected);
+      }
+	  
+      
+      
+      @Test
+      public void deleteBundle() throws Exception {
+
+        BundleRequest request = new BundleRequest();
+        final BundleResponse responseExpected = new BundleResponse()
+            .withData(givenBundle())
+            .withStatus(STATUSERROR.OPERATIONSUCCESS);
+
+        when(bac.deleteBundleById(request)).thenReturn(responseExpected);
+
+        final RequestBuilder requestController = createRequest(DELETE, request);
+        final MvcResult response = performRequestAndReturn(requestController);
+
+        assertJsonEquals(response, responseExpected);
+      }
+
 	  
 
 
