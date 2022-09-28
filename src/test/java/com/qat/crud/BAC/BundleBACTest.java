@@ -1,4 +1,4 @@
-package com.qat.crud.domain.Bundle.BAC;
+package com.qat.crud.BAC;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -17,6 +17,7 @@ import com.qat.crud.domain.Bundle.Response;
 import com.qat.crud.domain.Bundle.STATUSERROR;
 import com.qat.crud.domain.Bundle.ValidationError;
 import com.qat.crud.domain.Bundle.Validator;
+import com.qat.crud.domain.Bundle.BAC.BundleBACImpl;
 import com.qat.crud.domain.Bundle.BAR.BundleBAR;
 import com.qat.crud.domain.Bundle.BAR.BundleBuilder;
 import com.qat.crud.domain.Bundle.model.Bundle;
@@ -125,12 +126,13 @@ public class BundleBACTest {
     @Test
     public void testUpdateBundleWithInvalidData() {
         final Bundle bundle = givenBundle();
-        final BundleResponse responseExpected = new BundleResponse().withStatus(STATUSERROR.VALIDATIONERROR);
+        final BundleResponse responseExpected = new BundleResponse().withStatus(STATUSERROR.VALIDATIONERROR).withMessages(null);
         BundleRequest request = new BundleRequest().withData(bundle);
         when(bar.updateBundle(request)).thenReturn(responseExpected);
 
         BundleResponse bundleResponse = bac.updateBundle(request);
         assertEquals(responseExpected, bundleResponse);
+        
     }
 
     @Test
@@ -138,9 +140,9 @@ public class BundleBACTest {
         final Bundle bundle = givenBundle();
         final BundleResponse responseExpected = new BundleResponse().withStatus(STATUSERROR.VALIDATIONERROR).withMessages(null);
         BundleRequest request = new BundleRequest().withData(bundle);
-        when(bar.updateBundle(request)).thenReturn(responseExpected);
+        when(bar.insertBundle(request)).thenReturn(responseExpected);
 
-        BundleResponse bundleResponse = bac.updateBundle(request);
+        BundleResponse bundleResponse = bac.insertBundle(request);
         assertEquals(responseExpected, bundleResponse);
     }
 

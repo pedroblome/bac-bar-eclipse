@@ -33,16 +33,7 @@ public class BundleBACImpl implements BundleBAC {
         return bar.fetchBundleById(request);
     }
 
-    @Override
-    public BundleResponse insertBundle(BundleRequest request) {
-        Validator validator = new BundleValidator(request.getData());
-        if (!validator.validate()) {
-            return new BundleResponse().withStatus(STATUSERROR.VALIDATIONERROR).withMessages(validator.getErrors());
-        }
-        else {
-            return bar.insertBundle(request);
-        }
-    }
+
 
     @Override
     public BundleResponse updateBundle(BundleRequest request) {
@@ -55,6 +46,17 @@ public class BundleBACImpl implements BundleBAC {
             return bar.updateBundle(request);
         }
 
+    }
+    
+    @Override
+    public BundleResponse insertBundle(BundleRequest request) {
+        Validator validator = new BundleValidator(request.getData());
+        if (!validator.validate()) {
+            return new BundleResponse().withStatus(STATUSERROR.VALIDATIONERROR).withMessages(validator.getErrors());
+        }
+        else {
+            return bar.insertBundle(request);
+        }
     }
 
     @Override

@@ -24,14 +24,14 @@ import com.qat.crud.domain.Bundle.model.Status;
 
 @ExtendWith(MockitoExtension.class)
 class BundleBARTest {
-	@Mock
-	BundleMapper bundleMapper;
+    @Mock
+    BundleMapper bundleMapper;
 
-	@InjectMocks
-	BundleBARImpl bar;
+    @InjectMocks
+    BundleBARImpl bar;
 
-	private Bundle givenBundle() {
-		return givenBundle(1);
+    private Bundle givenBundle() {
+        return givenBundle(1);
     }
 
     private Bundle givenBundle(Integer id) {
@@ -44,7 +44,7 @@ class BundleBARTest {
     }
 
     @Test
-     void testFetchAllBundles() {
+    void testFetchAllBundles() {
 
         final List<Bundle> bundleExpected = givenBundles();
         final BundleResponse responseExpected = new BundleResponse().withDataList(bundleExpected).withStatus(STATUSERROR.OPERATIONSUCCESS);
@@ -58,7 +58,7 @@ class BundleBARTest {
     }
 
     @Test
-     void testFetchBundleById() {
+    void testFetchBundleById() {
 
         final Bundle bundleExpected = givenBundle();
         final BundleResponse responseExpected = new BundleResponse().withData(bundleExpected).withStatus(STATUSERROR.OPERATIONSUCCESS);
@@ -72,7 +72,7 @@ class BundleBARTest {
     }
 
     @Test
-	 void testInsertBundle() {
+    void testInsertBundle() {
 
         final Bundle bundleExpected = givenBundle();
         final BundleResponse responseExpected = new BundleResponse().withData(bundleExpected).withStatus(STATUSERROR.OPERATIONSUCCESS);
@@ -84,10 +84,10 @@ class BundleBARTest {
 
         Assertions.assertEquals(responseExpected, bundleResponse);
 
-	}
+    }
 
     @Test
-     void testUpdateBundleById() {
+    void testUpdateBundleById() {
 
         final Bundle bundleExpected = givenBundle();
         final BundleResponse responseExpected = new BundleResponse().withData(bundleExpected).withStatus(STATUSERROR.OPERATIONSUCCESS);
@@ -97,13 +97,12 @@ class BundleBARTest {
 
         BundleResponse bundleResponse = bar.updateBundle(request);
 
-
         Assertions.assertEquals(responseExpected, bundleResponse);
 
     }
 
     @Test
-     void testDeleteBundleById() {
+    void testDeleteBundleById() {
         final Bundle bundleExpected = givenBundle();
 
         final BundleResponse responseExpected = new BundleResponse().withStatus(STATUSERROR.OPERATIONSUCCESS);
@@ -113,7 +112,78 @@ class BundleBARTest {
 
         BundleResponse bundleResponse = bar.deleteBundleById(request);
 
+        Assertions.assertEquals(responseExpected, bundleResponse);
 
+    }
+
+    @Test
+    void testFetchAllBundlesFail() {
+
+        final List<Bundle> bundleExpected = null;
+        final BundleResponse responseExpected = new BundleResponse().withStatus(STATUSERROR.NOROWSFOUNDERROR);
+
+        BundleRequest request = new BundleRequest();
+        when(bundleMapper.fetchAll()).thenReturn(bundleExpected);
+
+        BundleResponse bundlesResponse = bar.fetchAllBundles(request);
+        Assertions.assertEquals(responseExpected, bundlesResponse);
+
+    }
+
+    @Test
+    void testFetchBundleByIdFail() {
+
+
+        final Bundle bundleExpected = null;
+        final BundleResponse responseExpected = new BundleResponse().withStatus(STATUSERROR.NOROWSFOUNDERROR);
+
+        BundleRequest request = new BundleRequest();
+        when(bundleMapper.fetchById(anyInt())).thenReturn(bundleExpected);
+
+        BundleResponse bundlesResponse = bar.fetchBundleById(request);
+        Assertions.assertEquals(responseExpected, bundlesResponse);
+    }
+
+    @Test
+    void testInsertBundleFail() {
+
+        final Bundle bundleExpected = givenBundle();
+        final BundleResponse responseExpected = new BundleResponse().withStatus(STATUSERROR.PERSISTENCEERROR);
+
+        BundleRequest request = new BundleRequest().withData(bundleExpected);
+        when(bundleMapper.insert(any(Bundle.class))).thenReturn(false);
+
+        BundleResponse bundleResponse = bar.insertBundle(request);
+
+        Assertions.assertEquals(responseExpected, bundleResponse);
+
+    }
+
+    @Test
+    void testUpdateBundleByIdFail() {
+
+        final Bundle bundleExpected = givenBundle();
+        final BundleResponse responseExpected = new BundleResponse().withStatus(STATUSERROR.PERSISTENCEERROR);
+
+        BundleRequest request = new BundleRequest().withData(bundleExpected);
+        when(bundleMapper.updatedById(any(Bundle.class))).thenReturn(false);
+
+        BundleResponse bundleResponse = bar.updateBundle(request);
+
+        Assertions.assertEquals(responseExpected, bundleResponse);
+
+    }
+
+    @Test
+    void testDeleteBundleByIdFaild() {
+        final Bundle bundleExpected = givenBundle();
+
+        final BundleResponse responseExpected = new BundleResponse().withStatus(STATUSERROR.NOROWSREMOVEDERROR);
+
+        BundleRequest request = new BundleRequest().withData(bundleExpected);
+        when(bundleMapper.deleteById(anyInt())).thenReturn(false);
+
+        BundleResponse bundleResponse = bar.deleteBundleById(request);
 
         Assertions.assertEquals(responseExpected, bundleResponse);
 
