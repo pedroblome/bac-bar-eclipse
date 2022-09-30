@@ -2,7 +2,7 @@ drop table if exists BUNDLE;
 
 -- CREATETABLE
 
-CREATE TYPE "enum_status" AS ENUM('confirmed', 'canceled', 'analisys', 'waiting_payment', 'route');
+CREATE TYPE "enum_status" AS ENUM('confirmed', 'canceled', 'analisys', 'waiting_payment', 'route', 'deleted');
 
 CREATE TABLE bundle (
     "id"   INTEGER  PRIMARY KEY AUTO_INCREMENT,

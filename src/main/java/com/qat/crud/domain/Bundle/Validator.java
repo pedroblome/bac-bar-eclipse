@@ -13,7 +13,7 @@ public abstract class Validator {
 		checkValidState();
 		return getErrors().isEmpty();
 	}
-
+	
 	private List<ValidationError> errors;
 
 	public Validator() {
@@ -36,8 +36,9 @@ public abstract class Validator {
 
 	public void checkStatus(String field, Status value) {
 		if (value != Status.analisys && value != Status.confirmed && value != Status.route
-				&& value != Status.waiting_payment) {
-			addError("status", "must be  confirmed, analisys, waiting_payment or route!");
+				&& value != Status.waiting_payment && value !=Status.deleted) {
+
+
 
 		}
 	}

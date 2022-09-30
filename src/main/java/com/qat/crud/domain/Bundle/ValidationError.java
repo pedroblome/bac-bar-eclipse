@@ -26,6 +26,7 @@ public class ValidationError implements Serializable {
 
 	public String getMessage() {
 		return message;
+		
 	}
 
 	@Override

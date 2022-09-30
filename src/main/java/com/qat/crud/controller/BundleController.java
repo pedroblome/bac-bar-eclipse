@@ -57,6 +57,7 @@ public class BundleController {
 	@PostMapping(INSERT)
 	public ResponseEntity<?> createBundle(@RequestBody BundleRequest request) {
         try {
+            System.out.println("passando controlller");
             BundleResponse response = bac.insertBundle(request);
             return response.toResponseEntity();
 

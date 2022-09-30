@@ -6,7 +6,8 @@ public enum Status {
 	analisys("analisys"),
 	waiting_payment("waiting_payment"),
 	route("route"),
-	unknow("unknow");
+	unknow("unknow"),
+	deleted("deleted");
 
 	private String status;
 

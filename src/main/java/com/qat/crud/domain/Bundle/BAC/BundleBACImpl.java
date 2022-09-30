@@ -3,6 +3,8 @@ package com.qat.crud.domain.Bundle.BAC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.qat.crud.domain.Bundle.Response;
 import com.qat.crud.domain.Bundle.STATUSERROR;
@@ -45,9 +47,8 @@ public class BundleBACImpl implements BundleBAC {
         else {
             return bar.updateBundle(request);
         }
-
+        
     }
-    
     @Override
     public BundleResponse insertBundle(BundleRequest request) {
         Validator validator = new BundleValidator(request.getData());
