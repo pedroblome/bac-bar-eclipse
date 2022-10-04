@@ -13,5 +13,5 @@ CREATE TABLE bundle (
     "status" "enum_status" not null,
     PRIMARY KEY ("id")
 );
---insert into bundle("namePackage", "zipCodeOrigin", "zipCodeDestin", "description", "status")  values('monitor', '72820200', '72820201', 'used in computer', 'confirmed');
+insert into bundle("namePackage", "zipCodeOrigin", "zipCodeDestin", "description", "status")  values('monitor', '72820200', '72820201', 'used in computer', 'confirmed');
 --insert into bundle("namePackage", "zipCodeOrigin", "zipCodeDestin", "description", "status")  values('monitor', '72820200', '72820201', 'used in computer', 'confirmed');

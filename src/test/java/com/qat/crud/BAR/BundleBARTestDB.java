@@ -34,7 +34,7 @@ class BundleBARTestDB {
     }
 
     private List<Bundle> givenBundles() {
-        return List.of(givenBundle(1));
+        return List.of(givenBundle(1), givenBundle(2));
     };
 
     @Test
