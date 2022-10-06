@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.qat.crud.domain.Bundle.STATUSERROR;
 import com.qat.crud.domain.Bundle.BAR.BundleBARImpl;
-import com.qat.crud.domain.Bundle.BAR.mapper.BundleMapper;
 import com.qat.crud.domain.Bundle.model.Bundle;
 import com.qat.crud.domain.Bundle.model.BundleBuilder;
 import com.qat.crud.domain.Bundle.model.BundleRequest;
@@ -24,8 +24,9 @@ import com.qat.crud.domain.Bundle.model.Status;
 
 @ExtendWith(MockitoExtension.class)
 class BundleBARTest {
+
     @Mock
-    BundleMapper bundleMapper;
+    SqlSession sqlSession;
 
     @InjectMocks
     BundleBARImpl bar;
@@ -46,11 +47,13 @@ class BundleBARTest {
     @Test
     void testFetchAllBundles() {
 
-        final List<Bundle> bundleExpected = givenBundles();
-        final BundleResponse responseExpected = new BundleResponse().withDataList(bundleExpected).withStatus(STATUSERROR.OPERATIONSUCCESS);
+        final List bundleExpected = givenBundles();
+        final BundleResponse responseExpected = new BundleResponse().withDataList(bundleExpected)
+                .withStatus(STATUSERROR.OPERATIONSUCCESS);
 
         BundleRequest request = new BundleRequest();
-        when(bundleMapper.fetchAll()).thenReturn(bundleExpected);
+
+        when(sqlSession.selectList(any(String.class))).thenReturn(bundleExpected);
 
         BundleResponse bundlesResponse = bar.fetchAllBundles(request);
         Assertions.assertEquals(responseExpected, bundlesResponse);
@@ -61,10 +64,11 @@ class BundleBARTest {
     void testFetchBundleById() {
 
         final Bundle bundleExpected = givenBundle();
-        final BundleResponse responseExpected = new BundleResponse().withData(bundleExpected).withStatus(STATUSERROR.OPERATIONSUCCESS);
+        final BundleResponse responseExpected = new BundleResponse().withData(bundleExpected)
+                .withStatus(STATUSERROR.OPERATIONSUCCESS);
 
         BundleRequest request = new BundleRequest().withData(bundleExpected);
-        when(bundleMapper.fetchById(1)).thenReturn(bundleExpected);
+        when(sqlSession.selectOne(any(String.class), any(java.lang.Integer.class))).thenReturn(bundleExpected);
 
         BundleResponse bundleResponse = bar.fetchBundleById(request);
         Assertions.assertEquals(responseExpected, bundleResponse);
@@ -75,10 +79,11 @@ class BundleBARTest {
     void testInsertBundle() {
 
         final Bundle bundleExpected = givenBundle();
-        final BundleResponse responseExpected = new BundleResponse().withData(bundleExpected).withStatus(STATUSERROR.OPERATIONSUCCESS);
+        final BundleResponse responseExpected = new BundleResponse().withData(bundleExpected)
+                .withStatus(STATUSERROR.OPERATIONSUCCESS);
 
         BundleRequest request = new BundleRequest().withData(bundleExpected);
-        when(bundleMapper.insert(any(Bundle.class))).thenReturn(true);
+        when(sqlSession.insert(any(String.class), any(Bundle.class))).thenReturn(1);
 
         BundleResponse bundleResponse = bar.insertBundle(request);
 
@@ -90,10 +95,11 @@ class BundleBARTest {
     void testUpdateBundleById() {
 
         final Bundle bundleExpected = givenBundle();
-        final BundleResponse responseExpected = new BundleResponse().withData(bundleExpected).withStatus(STATUSERROR.OPERATIONSUCCESS);
+        final BundleResponse responseExpected = new BundleResponse().withData(bundleExpected)
+                .withStatus(STATUSERROR.OPERATIONSUCCESS);
 
         BundleRequest request = new BundleRequest().withData(bundleExpected);
-        when(bundleMapper.updatedById(any(Bundle.class))).thenReturn(true);
+        when(sqlSession.update(any(String.class), any(Bundle.class))).thenReturn(1);
 
         BundleResponse bundleResponse = bar.updateBundle(request);
 
@@ -108,8 +114,7 @@ class BundleBARTest {
         final BundleResponse responseExpected = new BundleResponse().withStatus(STATUSERROR.OPERATIONSUCCESS);
 
         BundleRequest request = new BundleRequest().withData(bundleExpected);
-        when(bundleMapper.deleteById(anyInt())).thenReturn(true);
-
+        when(sqlSession.delete(any(String.class), any(Integer.class))).thenReturn(1);
         BundleResponse bundleResponse = bar.deleteBundleById(request);
 
         Assertions.assertEquals(responseExpected, bundleResponse);
@@ -119,11 +124,11 @@ class BundleBARTest {
     @Test
     void testFetchAllBundlesFail() {
 
-        final List<Bundle> bundleExpected = null;
+        final List bundleExpected = null;
         final BundleResponse responseExpected = new BundleResponse().withStatus(STATUSERROR.NOROWSFOUNDERROR);
 
         BundleRequest request = new BundleRequest();
-        when(bundleMapper.fetchAll()).thenReturn(bundleExpected);
+        when(sqlSession.selectList(any(String.class))).thenReturn(bundleExpected);
 
         BundleResponse bundlesResponse = bar.fetchAllBundles(request);
         Assertions.assertEquals(responseExpected, bundlesResponse);
@@ -133,12 +138,11 @@ class BundleBARTest {
     @Test
     void testFetchBundleByIdFail() {
 
-
         final Bundle bundleExpected = null;
         final BundleResponse responseExpected = new BundleResponse().withStatus(STATUSERROR.NOROWSFOUNDERROR);
 
         BundleRequest request = new BundleRequest();
-        when(bundleMapper.fetchById(anyInt())).thenReturn(bundleExpected);
+        when(sqlSession.selectOne(any(String.class), any(java.lang.Integer.class))).thenReturn(bundleExpected);
 
         BundleResponse bundlesResponse = bar.fetchBundleById(request);
         Assertions.assertEquals(responseExpected, bundlesResponse);
@@ -151,7 +155,7 @@ class BundleBARTest {
         final BundleResponse responseExpected = new BundleResponse().withStatus(STATUSERROR.PERSISTENCEERROR);
 
         BundleRequest request = new BundleRequest().withData(bundleExpected);
-        when(bundleMapper.insert(any(Bundle.class))).thenReturn(false);
+        when(sqlSession.insert(any(String.class), any(Bundle.class))).thenReturn(0);
 
         BundleResponse bundleResponse = bar.insertBundle(request);
 
@@ -166,7 +170,7 @@ class BundleBARTest {
         final BundleResponse responseExpected = new BundleResponse().withStatus(STATUSERROR.PERSISTENCEERROR);
 
         BundleRequest request = new BundleRequest().withData(bundleExpected);
-        when(bundleMapper.updatedById(any(Bundle.class))).thenReturn(false);
+        when(sqlSession.update(any(String.class), any(Bundle.class))).thenReturn(0);
 
         BundleResponse bundleResponse = bar.updateBundle(request);
 
@@ -181,7 +185,7 @@ class BundleBARTest {
         final BundleResponse responseExpected = new BundleResponse().withStatus(STATUSERROR.NOROWSREMOVEDERROR);
 
         BundleRequest request = new BundleRequest().withData(bundleExpected);
-        when(bundleMapper.deleteById(anyInt())).thenReturn(false);
+        when(sqlSession.delete(any(String.class), any(Integer.class))).thenReturn(0);
 
         BundleResponse bundleResponse = bar.deleteBundleById(request);
 
