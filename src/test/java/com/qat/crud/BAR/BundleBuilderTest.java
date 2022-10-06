@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.qat.crud.domain.Bundle.BAR.BundleBuilder;
 import com.qat.crud.domain.Bundle.model.Bundle;
+import com.qat.crud.domain.Bundle.model.BundleBuilder;
 import com.qat.crud.domain.Bundle.model.Status;
 
 @ExtendWith(MockitoExtension.class)

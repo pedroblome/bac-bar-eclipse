@@ -16,8 +16,8 @@ import org.springframework.test.web.servlet.RequestBuilder;
 
 import com.qat.crud.domain.Bundle.STATUSERROR;
 import com.qat.crud.domain.Bundle.BAC.BundleBAC;
-import com.qat.crud.domain.Bundle.BAR.BundleBuilder;
 import com.qat.crud.domain.Bundle.model.Bundle;
+import com.qat.crud.domain.Bundle.model.BundleBuilder;
 import com.qat.crud.domain.Bundle.model.BundleRequest;
 import com.qat.crud.domain.Bundle.model.BundleResponse;
 import com.qat.crud.domain.Bundle.model.Status;

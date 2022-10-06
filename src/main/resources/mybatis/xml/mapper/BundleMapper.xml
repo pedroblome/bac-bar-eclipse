@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BundleMapper">
+
+  <!-- mapping between table columns and object fields -->
+  <resultMap id="bundleeResultType" type="Bundle">
+    <id property="id" column="id" jdbcType="INTEGER" />
+    <result property="namePackage" column="namePackage" jdbcType="VARCHAR"/>
+    <result property="zipCodeOrigin" column="zipCodeOrigin" jdbcType="VARCHAR"/>
+    <result property="zipCodeDestin" column="zipCodeDestin" jdbcType="VARCHAR"/>
+    <result property="description" column="description" jdbcType="VARCHAR"/>
+    <result property="status" column="status" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <!--  INSERT-->
+  <insert id="insertBundle" parameterType="Bundle"
+    useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    insert into bundle (\"namePackage\", \"zipCodeOrigin\", \"zipCodeDestin\", \"description\", \"status\") values(#{namePackage}, #{zipCodeOrigin}, #{zipCodeDestin}, #{description}, #{status}) 
+  </insert>
+
+  <!--  SELECT-->
+  <select id="fetchByIdBundle" resultType="Bundle">
+    SELECT * FROM bundle  WHERE id = #{id}
+  </select>
+  <select id="fetchAllBundle" resultType="Bundle">
+    SELECT * FROM bundle
+  </select>
+
+  <!--  UPDATE-->
+  <update id="updateBundle" parameterType="Bundle">
+update bundle set \"namePackage\" = #{namePackage}, \"zipCodeOrigin\" = #{zipCodeOrigin}, \"zipCodeDestin\" = #{zipCodeDestin}, \"description\" = #{description}, \"status\" = #{status} where \"id\" =#{id} 
+  </update>
+
+  <!--  DELETE-->
+  <delete id="deleteBundle" parameterType="Bundle">
+    DELETE FROM bundle WHERE id = #{id}
+  </delete>
+</mapper>

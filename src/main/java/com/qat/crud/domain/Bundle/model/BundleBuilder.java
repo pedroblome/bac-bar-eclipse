@@ -1,7 +1,4 @@
-package com.qat.crud.domain.Bundle.BAR;
-
-import com.qat.crud.domain.Bundle.model.Bundle;
-import com.qat.crud.domain.Bundle.model.Status;
+package com.qat.crud.domain.Bundle.model;
 
 public class BundleBuilder {
 
