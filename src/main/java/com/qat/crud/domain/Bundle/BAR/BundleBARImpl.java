@@ -39,7 +39,7 @@ public class BundleBARImpl implements BundleBAR {
     @Override
     @Transactional(readOnly = true)
     public BundleResponse fetchBundleById(BundleRequest request) {
-        final Bundle bundle =sqlSession.selectOne("fetchByIdBundle", request.getData().getId());
+        final Bundle bundle =sqlSession.selectOne("fetchByIdBundle", request.getId());
 
         if(Objects.nonNull(bundle)) {
             return new BundleResponse().withData(bundle).withStatus(STATUSERROR.OPERATIONSUCCESS);
