@@ -68,7 +68,7 @@ class BundleBARTest {
                 .withStatus(STATUSERROR.OPERATIONSUCCESS);
 
         BundleRequest request = new BundleRequest().withData(bundleExpected);
-        when(sqlSession.selectOne(any(String.class), any(java.lang.Integer.class))).thenReturn(bundleExpected);
+        when(sqlSession.selectOne(any(String.class), any())).thenReturn(bundleExpected);
 
         BundleResponse bundleResponse = bar.fetchBundleById(request);
         Assertions.assertEquals(responseExpected, bundleResponse);
@@ -142,7 +142,7 @@ class BundleBARTest {
         final BundleResponse responseExpected = new BundleResponse().withStatus(STATUSERROR.NOROWSFOUNDERROR);
 
         BundleRequest request = new BundleRequest();
-        when(sqlSession.selectOne(any(String.class), any(java.lang.Integer.class))).thenReturn(bundleExpected);
+        when(sqlSession.selectOne(any(String.class), any())).thenReturn(bundleExpected);
 
         BundleResponse bundlesResponse = bar.fetchBundleById(request);
         Assertions.assertEquals(responseExpected, bundlesResponse);
